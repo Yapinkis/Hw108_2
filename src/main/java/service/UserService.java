@@ -39,12 +39,13 @@ public class UserService {
         if (Validator.validateUser(userDTO)) {
             User user = Mapper.toUser(userDTO);
             userRepository.addUser(user);
+            log.info("Пользователь " + name + " добавлен в базу данных.");
         }
     }
 
     public List<UserDTO> getAllUsers() {
         Optional<List<User>> optionalUsers = userRepository.getAllUsers();
-        if (optionalUsers.isPresent()) {
+        if (optionalUsers.isPresent() && !optionalUsers.get().isEmpty()) {
             log.info("Предоставлен список пользователей");
             return optionalUsers.get().stream()
                     .map(Mapper::toUserDTO)
@@ -69,7 +70,7 @@ public class UserService {
             UserDTO userDTO = UserDTO.builder().name(newName).email(newEmail).age(newAge).build();
             if (Validator.validateUser(userDTO)) {
                 userRepository.editUser(userDTO,email);
-                log.info("Пользователь обновлён");
+                log.info("Пользователь был обновлён");
             }
         } else {
             log.info("Пользователь с указанным email не обнаружен в базе данных");
@@ -80,7 +81,7 @@ public class UserService {
         if (userRepository.deleteUser(email)) {
             log.info("Пользователь был удалён");
         } else {
-            log.info("Возникла ошибка при удалении пользователя");
+            log.info("Пользователь с указанным email не обнаружен в базе данных");
         }
     }
 

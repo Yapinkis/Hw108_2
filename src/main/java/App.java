@@ -5,6 +5,8 @@ import service.UserService;
 
 import java.util.Scanner;
 
+import static util.Validator.readValidCommand;
+
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -19,8 +21,9 @@ public class App {
                      3 - Редактировать пользователя
                      4 - Удалить пользователя
                      5 - Завершить программу""");
-            int number = scanner.nextInt();
-            scanner.nextLine();
+
+            int number = readValidCommand(scanner);
+
             switch (number) {
                 case 1:
                     userService.createUser();
